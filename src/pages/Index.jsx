@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Settings } from 'lucide-react';
 import ModeSwitcher from '../components/ModeSwitcher';
 import BasicPanel from '../components/BasicPanel';
 import ScientificPanel from '../components/ScientificPanel';
@@ -25,19 +26,36 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-8 text-cyan-400">
-          Advanced Calculator
-        </h1>
-        
-        <ModeSwitcher 
-          selectedMode={selectedMode} 
-          onModeChange={setSelectedMode} 
-        />
-        
-        <div className="mt-6">
-          {renderPanel()}
+    <div className="min-h-screen bg-slate-950 text-white">
+      {/* Header with Logo and Settings */}
+      <div className="bg-slate-900 border-b border-slate-800 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">C</span>
+            </div>
+            <h1 className="text-xl font-semibold text-white">Calculator</h1>
+          </div>
+          
+          {/* Settings Icon */}
+          <button className="p-2 rounded-lg hover:bg-slate-800 transition-colors">
+            <Settings className="w-5 h-5 text-gray-400 hover:text-white" />
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="p-4">
+        <div className="max-w-4xl mx-auto">
+          <ModeSwitcher 
+            selectedMode={selectedMode} 
+            onModeChange={setSelectedMode} 
+          />
+          
+          <div className="mt-6">
+            {renderPanel()}
+          </div>
         </div>
       </div>
     </div>
