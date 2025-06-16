@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 const ScientificPanel = () => {
@@ -105,13 +104,13 @@ const ScientificPanel = () => {
   );
 
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-2xl max-w-2xl mx-auto">
+    <div className="bg-background rounded-xl p-6 shadow-2xl max-w-2xl mx-auto">
       {/* Display */}
-      <div className="bg-slate-900 rounded-lg p-4 mb-4">
-        <div className="text-right text-2xl font-mono text-cyan-400 min-h-[2.5rem] flex items-center justify-end">
+      <div className="bg-card rounded-lg p-4 mb-4">
+        <div className="text-right text-2xl font-mono text-primary min-h-[2.5rem] flex items-center justify-end">
           {display}
         </div>
-        <div className="text-right text-sm text-gray-400 mt-1">
+        <div className="text-right text-sm text-muted-foreground mt-1">
           Mode: {isRadians ? 'Radians' : 'Degrees'} | Memory: {memory}
         </div>
       </div>
@@ -120,7 +119,7 @@ const ScientificPanel = () => {
       <div className="mb-4 flex justify-center">
         <button
           onClick={() => setIsRadians(!isRadians)}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground px-4 py-2 rounded-lg"
         >
           {isRadians ? 'RAD' : 'DEG'}
         </button>
@@ -131,37 +130,37 @@ const ScientificPanel = () => {
         {/* Row 1 - Functions */}
         <Button 
           onClick={() => scientificFunction('sin')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           sin
         </Button>
         <Button 
           onClick={() => scientificFunction('cos')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           cos
         </Button>
         <Button 
           onClick={() => scientificFunction('tan')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           tan
         </Button>
         <Button 
           onClick={() => scientificFunction('ln')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           ln
         </Button>
         <Button 
           onClick={() => scientificFunction('log')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           log
         </Button>
         <Button 
           onClick={() => scientificFunction('sqrt')}
-          className="bg-purple-600 hover:bg-purple-700 text-white"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground"
         >
           √
         </Button>
@@ -169,31 +168,31 @@ const ScientificPanel = () => {
         {/* Row 2 - Powers and Memory */}
         <Button 
           onClick={() => scientificFunction('pow2')}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
         >
           x²
         </Button>
         <Button 
           onClick={() => scientificFunction('pow3')}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
         >
           x³
         </Button>
         <Button 
           onClick={() => setDisplay(display + '^')}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
         >
           x^y
         </Button>
         <Button 
           onClick={() => scientificFunction('factorial')}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
         >
           x!
         </Button>
         <Button 
           onClick={() => scientificFunction('inverse')}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
         >
           1/x
         </Button>

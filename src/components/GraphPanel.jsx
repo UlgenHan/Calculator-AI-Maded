@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 
 const GraphPanel = () => {
@@ -55,7 +54,7 @@ const GraphPanel = () => {
     });
 
     // Draw grid
-    ctx.strokeStyle = '#374151';
+    ctx.strokeStyle = 'hsl(var(--muted))';
     ctx.lineWidth = 1;
 
     // Vertical grid lines
@@ -77,7 +76,7 @@ const GraphPanel = () => {
     }
 
     // Draw axes
-    ctx.strokeStyle = '#6B7280';
+    ctx.strokeStyle = 'hsl(var(--border))';
     ctx.lineWidth = 2;
 
     // X-axis
@@ -99,7 +98,7 @@ const GraphPanel = () => {
     }
 
     // Draw function
-    ctx.strokeStyle = '#06B6D4';
+    ctx.strokeStyle = 'hsl(var(--primary))';
     ctx.lineWidth = 3;
     ctx.beginPath();
 
@@ -126,7 +125,7 @@ const GraphPanel = () => {
     ctx.stroke();
 
     // Draw axis labels
-    ctx.fillStyle = '#9CA3AF';
+    ctx.fillStyle = 'hsl(var(--muted-foreground))';
     ctx.font = '12px monospace';
     ctx.textAlign = 'center';
 
@@ -164,35 +163,35 @@ const GraphPanel = () => {
   ];
 
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-2xl max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-6 text-cyan-400">Function Grapher</h2>
+    <div className="bg-background rounded-xl p-6 shadow-2xl max-w-6xl mx-auto">
+      <h2 className="text-2xl font-bold text-center mb-6 text-primary">Function Grapher</h2>
       
       {/* Controls */}
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Equation Input */}
         <div className="space-y-4">
           <div>
-            <label className="block text-white mb-2 font-semibold">
+            <label className="block text-foreground mb-2 font-semibold">
               Function: f(x) =
             </label>
             <input
               type="text"
               value={equation}
               onChange={(e) => setEquation(e.target.value)}
-              className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg px-4 py-2 focus:border-cyan-400 focus:outline-none font-mono"
+              className="w-full bg-card text-foreground border border-border rounded-lg px-4 py-2 focus:border-primary focus:outline-none font-mono"
               placeholder="Enter function (e.g., x^2, sin(x), ln(x))"
             />
           </div>
 
           {/* Preset Functions */}
           <div>
-            <label className="block text-white mb-2 font-semibold">Quick Functions:</label>
+            <label className="block text-foreground mb-2 font-semibold">Quick Functions:</label>
             <div className="grid grid-cols-2 gap-2">
               {presetEquations.map((preset) => (
                 <button
                   key={preset.name}
                   onClick={() => setEquation(preset.equation)}
-                  className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
+                  className="bg-primary hover:bg-primary/80 text-primary-foreground py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
                 >
                   {preset.name}
                 </button>
@@ -202,83 +201,51 @@ const GraphPanel = () => {
         </div>
 
         {/* Range Controls */}
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-white mb-1 text-sm">X Min:</label>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-foreground mb-2 font-semibold">X Range:</label>
+            <div className="flex space-x-2">
               <input
                 type="number"
                 value={xMin}
                 onChange={(e) => setXMin(parseFloat(e.target.value))}
-                className="w-full bg-slate-700 text-white border border-slate-600 rounded px-3 py-2 focus:border-cyan-400 focus:outline-none"
+                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
               />
-            </div>
-            <div>
-              <label className="block text-white mb-1 text-sm">X Max:</label>
               <input
                 type="number"
                 value={xMax}
                 onChange={(e) => setXMax(parseFloat(e.target.value))}
-                className="w-full bg-slate-700 text-white border border-slate-600 rounded px-3 py-2 focus:border-cyan-400 focus:outline-none"
+                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
               />
             </div>
-            <div>
-              <label className="block text-white mb-1 text-sm">Y Min:</label>
+          </div>
+          <div>
+            <label className="block text-foreground mb-2 font-semibold">Y Range:</label>
+            <div className="flex space-x-2">
               <input
                 type="number"
                 value={yMin}
                 onChange={(e) => setYMin(parseFloat(e.target.value))}
-                className="w-full bg-slate-700 text-white border border-slate-600 rounded px-3 py-2 focus:border-cyan-400 focus:outline-none"
+                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
               />
-            </div>
-            <div>
-              <label className="block text-white mb-1 text-sm">Y Max:</label>
               <input
                 type="number"
                 value={yMax}
                 onChange={(e) => setYMax(parseFloat(e.target.value))}
-                className="w-full bg-slate-700 text-white border border-slate-600 rounded px-3 py-2 focus:border-cyan-400 focus:outline-none"
+                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
               />
             </div>
-          </div>
-
-          {/* Quick Range Presets */}
-          <div className="flex space-x-2">
-            <button
-              onClick={() => {
-                setXMin(-10); setXMax(10); setYMin(-10); setYMax(10);
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
-            >
-              Standard
-            </button>
-            <button
-              onClick={() => {
-                setXMin(-5); setXMax(5); setYMin(-5); setYMax(5);
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
-            >
-              Zoom In
-            </button>
-            <button
-              onClick={() => {
-                setXMin(-20); setXMax(20); setYMin(-20); setYMax(20);
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
-            >
-              Zoom Out
-            </button>
           </div>
         </div>
       </div>
 
       {/* Graph Canvas */}
-      <div className="bg-slate-900 rounded-lg p-4">
+      <div className="bg-card rounded-lg p-4">
         <canvas
           ref={canvasRef}
           width={800}
-          height={500}
-          className="w-full h-auto border border-slate-700 rounded bg-slate-900"
+          height={400}
+          className="w-full h-[400px] rounded-lg"
         />
       </div>
 

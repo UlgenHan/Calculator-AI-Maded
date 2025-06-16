@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Settings } from 'lucide-react';
 import ModeSwitcher from '../components/ModeSwitcher';
@@ -26,27 +25,27 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header with Logo and Settings */}
-      <div className="bg-slate-800 border-b border-slate-700 px-6 py-4">
+      <div className="bg-card border-b border-border px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">C</span>
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-lg">C</span>
             </div>
-            <h1 className="text-xl font-semibold text-white">Calculator</h1>
+            <h1 className="text-xl font-semibold text-foreground">Calculator</h1>
           </div>
           
           {/* Settings Icon */}
-          <button className="p-2 rounded-lg hover:bg-slate-700 transition-colors">
-            <Settings className="w-5 h-5 text-gray-300 hover:text-white" />
+          <button className="p-2 rounded-lg hover:bg-secondary transition-colors">
+            <Settings className="w-5 h-5 text-muted-foreground hover:text-foreground" />
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="p-4 bg-slate-900 min-h-screen">
+      <div className="p-4 bg-background min-h-screen">
         <div className="max-w-4xl mx-auto">
           <ModeSwitcher 
             selectedMode={selectedMode} 

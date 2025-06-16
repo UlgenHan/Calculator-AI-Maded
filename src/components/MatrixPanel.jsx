@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 const MatrixPanel = () => {
@@ -100,8 +99,8 @@ const MatrixPanel = () => {
   };
 
   const MatrixInput = ({ matrix, setMatrix, label }) => (
-    <div className="bg-slate-700 rounded-lg p-4">
-      <h3 className="text-lg font-semibold mb-3 text-cyan-400">{label}</h3>
+    <div className="bg-card rounded-lg p-4">
+      <h3 className="text-lg font-semibold mb-3 text-primary">{label}</h3>
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${matrixSize.cols}, 1fr)` }}>
         {matrix.map((row, i) =>
           row.map((val, j) => (
@@ -110,7 +109,7 @@ const MatrixPanel = () => {
               type="number"
               value={val}
               onChange={(e) => updateMatrixValue(matrix, setMatrix, i, j, e.target.value)}
-              className="w-16 h-12 text-center bg-slate-800 border border-slate-600 rounded text-white focus:border-cyan-400 focus:outline-none"
+              className="w-16 h-12 text-center bg-background border border-border rounded text-foreground focus:border-primary focus:outline-none"
             />
           ))
         )}
@@ -123,31 +122,31 @@ const MatrixPanel = () => {
 
     if (typeof result === 'string') {
       return (
-        <div className="bg-red-900 border border-red-700 rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2 text-red-400">Result</h3>
-          <p className="text-red-300">{result}</p>
+        <div className="bg-destructive/20 border border-destructive rounded-lg p-4">
+          <h3 className="text-lg font-semibold mb-2 text-destructive">Result</h3>
+          <p className="text-destructive-foreground">{result}</p>
         </div>
       );
     }
 
     if (typeof result === 'number') {
       return (
-        <div className="bg-slate-700 rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2 text-cyan-400">Result</h3>
-          <p className="text-2xl font-mono text-green-400">{result}</p>
+        <div className="bg-card rounded-lg p-4">
+          <h3 className="text-lg font-semibold mb-2 text-primary">Result</h3>
+          <p className="text-2xl font-mono text-primary">{result}</p>
         </div>
       );
     }
 
     return (
-      <div className="bg-slate-700 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-3 text-cyan-400">Result Matrix</h3>
+      <div className="bg-card rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-3 text-primary">Result Matrix</h3>
         <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${result[0].length}, 1fr)` }}>
           {result.map((row, i) =>
             row.map((val, j) => (
               <div
                 key={`${i}-${j}`}
-                className="w-16 h-12 flex items-center justify-center bg-slate-800 border border-slate-600 rounded text-green-400 font-mono"
+                className="w-16 h-12 flex items-center justify-center bg-background border border-border rounded text-primary font-mono"
               >
                 {typeof val === 'number' ? val.toFixed(2) : val}
               </div>
@@ -159,27 +158,27 @@ const MatrixPanel = () => {
   };
 
   return (
-    <div className="bg-slate-800 rounded-xl p-6 shadow-2xl max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-6 text-cyan-400">Matrix Calculator</h2>
+    <div className="bg-background rounded-xl p-6 shadow-2xl max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold text-center mb-6 text-primary">Matrix Calculator</h2>
       
       {/* Matrix Size Controls */}
       <div className="mb-6 flex justify-center space-x-4">
         <div className="flex items-center space-x-2">
-          <label className="text-white">Rows:</label>
+          <label className="text-foreground">Rows:</label>
           <select
             value={matrixSize.rows}
             onChange={(e) => updateMatrixSize(parseInt(e.target.value), matrixSize.cols)}
-            className="bg-slate-700 text-white rounded px-2 py-1"
+            className="bg-card text-foreground rounded px-2 py-1"
           >
             {[2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
           </select>
         </div>
         <div className="flex items-center space-x-2">
-          <label className="text-white">Columns:</label>
+          <label className="text-foreground">Columns:</label>
           <select
             value={matrixSize.cols}
             onChange={(e) => updateMatrixSize(matrixSize.rows, parseInt(e.target.value))}
-            className="bg-slate-700 text-white rounded px-2 py-1"
+            className="bg-card text-foreground rounded px-2 py-1"
           >
             {[2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
           </select>
@@ -196,45 +195,27 @@ const MatrixPanel = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <button
           onClick={addMatrices}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
         >
-          A + B
+          Add
         </button>
         <button
           onClick={subtractMatrices}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
         >
-          A - B
+          Subtract
         </button>
         <button
           onClick={multiplyMatrices}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
         >
-          A × B
-        </button>
-        <button
-          onClick={() => setResult(transposeMatrix(matrixA))}
-          className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
-        >
-          Transpose A
+          Multiply
         </button>
         <button
           onClick={() => setResult(calculateDeterminant(matrixA))}
-          className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
         >
-          Det(A)
-        </button>
-        <button
-          onClick={() => setResult(calculateDeterminant(matrixB))}
-          className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
-        >
-          Det(B)
-        </button>
-        <button
-          onClick={() => setResult(null)}
-          className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105 md:col-span-2"
-        >
-          Clear Result
+          Determinant
         </button>
       </div>
 

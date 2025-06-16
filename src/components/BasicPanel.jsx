@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 const BasicPanel = () => {
@@ -77,10 +76,10 @@ const BasicPanel = () => {
   };
 
   return (
-    <div className="bg-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm mx-auto border border-slate-700">
+    <div className="bg-background rounded-3xl p-6 shadow-2xl max-w-sm mx-auto border border-border">
       {/* Display */}
-      <div className="bg-slate-900 rounded-2xl p-6 mb-6 border border-slate-700">
-        <div className="text-right text-4xl font-light text-white min-h-[4rem] flex items-center justify-end overflow-hidden">
+      <div className="bg-card rounded-2xl p-6 mb-6 border border-border">
+        <div className="text-right text-4xl font-light text-foreground min-h-[4rem] flex items-center justify-end overflow-hidden">
           {display}
         </div>
       </div>
@@ -90,25 +89,25 @@ const BasicPanel = () => {
         {/* Row 1 */}
         <button
           onClick={clear}
-          className="h-16 bg-gray-600 hover:bg-gray-500 text-white font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
         >
           AC
         </button>
         <button
           onClick={() => setDisplay(display.slice(0, -1) || '0')}
-          className="h-16 bg-gray-600 hover:bg-gray-500 text-white font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
         >
           ⌫
         </button>
         <button
           onClick={() => performOperation('%')}
-          className="h-16 bg-gray-600 hover:bg-gray-500 text-white font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
         >
           %
         </button>
         <button
           onClick={() => performOperation('÷')}
-          className="h-16 bg-orange-600 hover:bg-orange-500 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           ÷
         </button>
@@ -116,25 +115,25 @@ const BasicPanel = () => {
         {/* Row 2 - Numbers 7, 8, 9 */}
         <button
           onClick={() => inputNumber(7)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           7
         </button>
         <button
           onClick={() => inputNumber(8)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           8
         </button>
         <button
           onClick={() => inputNumber(9)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           9
         </button>
         <button
           onClick={() => performOperation('×')}
-          className="h-16 bg-orange-600 hover:bg-orange-500 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           ×
         </button>
@@ -142,25 +141,25 @@ const BasicPanel = () => {
         {/* Row 3 - Numbers 4, 5, 6 */}
         <button
           onClick={() => inputNumber(4)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           4
         </button>
         <button
           onClick={() => inputNumber(5)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           5
         </button>
         <button
           onClick={() => inputNumber(6)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           6
         </button>
         <button
           onClick={() => performOperation('-')}
-          className="h-16 bg-orange-600 hover:bg-orange-500 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           −
         </button>
@@ -168,25 +167,25 @@ const BasicPanel = () => {
         {/* Row 4 - Numbers 1, 2, 3 */}
         <button
           onClick={() => inputNumber(1)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           1
         </button>
         <button
           onClick={() => inputNumber(2)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           2
         </button>
         <button
           onClick={() => inputNumber(3)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           3
         </button>
         <button
           onClick={() => performOperation('+')}
-          className="h-16 bg-orange-600 hover:bg-orange-500 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           +
         </button>
@@ -194,19 +193,19 @@ const BasicPanel = () => {
         {/* Row 5 - 0, decimal, equals */}
         <button
           onClick={() => inputNumber(0)}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95 col-span-2"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95 col-span-2"
         >
           0
         </button>
         <button
           onClick={inputDecimal}
-          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           .
         </button>
         <button
           onClick={executeOperation}
-          className="h-16 bg-orange-600 hover:bg-orange-500 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
+          className="h-16 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           =
         </button>
