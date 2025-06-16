@@ -76,147 +76,140 @@ const BasicPanel = () => {
     }
   };
 
-  const Button = ({ onClick, className = '', children }) => (
-    <button
-      onClick={onClick}
-      className={`
-        h-14 rounded-xl font-semibold text-lg transition-all duration-150
-        hover:scale-105 active:scale-95 shadow-lg border border-slate-700
-        ${className}
-      `}
-    >
-      {children}
-    </button>
-  );
-
   return (
-    <div className="bg-slate-900 rounded-2xl p-6 shadow-2xl max-w-md mx-auto border border-slate-800">
+    <div className="bg-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm mx-auto border border-slate-700">
       {/* Display */}
-      <div className="bg-slate-950 rounded-xl p-6 mb-6 border border-slate-800">
-        <div className="text-right text-3xl font-mono text-blue-400 min-h-[3rem] flex items-center justify-end">
+      <div className="bg-slate-900 rounded-2xl p-6 mb-6 border border-slate-700">
+        <div className="text-right text-4xl font-light text-white min-h-[4rem] flex items-center justify-end overflow-hidden">
           {display}
         </div>
       </div>
 
-      {/* Buttons */}
+      {/* Buttons Grid - Phone Calculator Style */}
       <div className="grid grid-cols-4 gap-3">
         {/* Row 1 */}
-        <Button 
+        <button
           onClick={clear}
-          className="bg-red-600 hover:bg-red-700 text-white col-span-2"
+          className="h-16 bg-gray-500 hover:bg-gray-400 text-black font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
         >
-          Clear
-        </Button>
-        <Button 
+          AC
+        </button>
+        <button
           onClick={() => setDisplay(display.slice(0, -1) || '0')}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
+          className="h-16 bg-gray-500 hover:bg-gray-400 text-black font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
         >
           ⌫
-        </Button>
-        <Button 
+        </button>
+        <button
+          onClick={() => performOperation('%')}
+          className="h-16 bg-gray-500 hover:bg-gray-400 text-black font-semibold text-xl rounded-full transition-all duration-150 active:scale-95"
+        >
+          %
+        </button>
+        <button
           onClick={() => performOperation('÷')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="h-16 bg-orange-500 hover:bg-orange-400 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           ÷
-        </Button>
+        </button>
 
         {/* Row 2 */}
-        <Button 
+        <button
           onClick={() => inputNumber(7)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           7
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(8)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           8
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(9)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           9
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => performOperation('×')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="h-16 bg-orange-500 hover:bg-orange-400 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           ×
-        </Button>
+        </button>
 
         {/* Row 3 */}
-        <Button 
+        <button
           onClick={() => inputNumber(4)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           4
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(5)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           5
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(6)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           6
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => performOperation('-')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="h-16 bg-orange-500 hover:bg-orange-400 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
-          -
-        </Button>
+          −
+        </button>
 
         {/* Row 4 */}
-        <Button 
+        <button
           onClick={() => inputNumber(1)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           1
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(2)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           2
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => inputNumber(3)}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           3
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={() => performOperation('+')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="h-16 bg-orange-500 hover:bg-orange-400 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           +
-        </Button>
+        </button>
 
         {/* Row 5 */}
-        <Button 
+        <button
           onClick={() => inputNumber(0)}
-          className="bg-slate-800 hover:bg-slate-700 text-white col-span-2"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95 col-span-2"
         >
           0
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={inputDecimal}
-          className="bg-slate-800 hover:bg-slate-700 text-white"
+          className="h-16 bg-slate-600 hover:bg-slate-500 text-white font-light text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           .
-        </Button>
-        <Button 
+        </button>
+        <button
           onClick={executeOperation}
-          className="bg-green-600 hover:bg-green-700 text-white"
+          className="h-16 bg-orange-500 hover:bg-orange-400 text-white font-semibold text-2xl rounded-full transition-all duration-150 active:scale-95"
         >
           =
-        </Button>
+        </button>
       </div>
     </div>
   );
