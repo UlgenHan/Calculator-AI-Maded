@@ -1,188 +1,152 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
+import Plot from 'react-plotly.js';
+import { create, all } from 'mathjs';
+
+const math = create(all);
+
+const defaultFunctions = [
+  { label: 'f(x)', expr: 'x^2', color: '#1f77b4' },
+];
+
+const presetEquations = [
+  { name: 'Quadratic', equation: 'x^2' },
+  { name: 'Cubic', equation: 'x^3' },
+  { name: 'Sine', equation: 'sin(x)' },
+  { name: 'Cosine', equation: 'cos(x)' },
+  { name: 'Exponential', equation: 'e^x' },
+  { name: 'Logarithm', equation: 'log(x)' },
+  { name: 'Absolute', equation: 'abs(x)' },
+  { name: 'Square Root', equation: 'sqrt(x)' },
+];
+
+const getParameters = (expr) => {
+  // Find all single-letter variables except x
+  const matches = expr.match(/[a-wyzA-WYZ]/g);
+  if (!matches) return [];
+  return Array.from(new Set(matches));
+};
 
 const GraphPanel = () => {
-  const [equation, setEquation] = useState('x^2');
+  const [functions, setFunctions] = useState(defaultFunctions);
   const [xMin, setXMin] = useState(-10);
   const [xMax, setXMax] = useState(10);
   const [yMin, setYMin] = useState(-10);
   const [yMax, setYMax] = useState(10);
-  const canvasRef = useRef(null);
+  const [paramValues, setParamValues] = useState({});
+  const [showLegend, setShowLegend] = useState(true);
+  const [showGrid, setShowGrid] = useState(true);
+  const [axisType, setAxisType] = useState('linear');
 
-  const evaluateFunction = (x, equation) => {
+  // Add a new function
+  const addFunction = () => {
+    setFunctions([...functions, { label: `f${functions.length+1}(x)`, expr: '', color: '#ff7f0e' }]);
+  };
+
+  // Remove a function
+  const removeFunction = (idx) => {
+    setFunctions(functions.filter((_, i) => i !== idx));
+  };
+
+  // Update a function
+  const updateFunction = (idx, key, value) => {
+    setFunctions(functions.map((fn, i) => i === idx ? { ...fn, [key]: value } : fn));
+  };
+
+  // Update parameter value
+  const updateParam = (param, value) => {
+    setParamValues({ ...paramValues, [param]: value });
+  };
+
+  // Generate plot data and error in a memoized way
+  const { plotData, error } = useMemo(() => {
+    let error = null;
+    let plotData = [];
+    let validCount = 0;
     try {
-      // Replace common mathematical expressions with JavaScript equivalents
-      let jsEquation = equation
-        .replace(/\^/g, '**')
-        .replace(/sin/g, 'Math.sin')
-        .replace(/cos/g, 'Math.cos')
-        .replace(/tan/g, 'Math.tan')
-        .replace(/ln/g, 'Math.log')
-        .replace(/log/g, 'Math.log10')
-        .replace(/sqrt/g, 'Math.sqrt')
-        .replace(/pi/g, 'Math.PI')
-        .replace(/e/g, 'Math.E')
-        .replace(/abs/g, 'Math.abs')
-        .replace(/x/g, `(${x})`);
-
-      return eval(jsEquation);
-    } catch (error) {
-      return NaN;
-    }
-  };
-
-  const drawGraph = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height);
-
-    // Set up coordinate system
-    const xRange = xMax - xMin;
-    const yRange = yMax - yMin;
-    const xScale = width / xRange;
-    const yScale = height / yRange;
-
-    // Convert world coordinates to canvas coordinates
-    const worldToCanvas = (x, y) => ({
-      x: (x - xMin) * xScale,
-      y: height - (y - yMin) * yScale
-    });
-
-    // Draw grid
-    ctx.strokeStyle = 'hsl(var(--muted))';
-    ctx.lineWidth = 1;
-
-    // Vertical grid lines
-    for (let x = Math.ceil(xMin); x <= xMax; x++) {
-      const canvasX = worldToCanvas(x, 0).x;
-      ctx.beginPath();
-      ctx.moveTo(canvasX, 0);
-      ctx.lineTo(canvasX, height);
-      ctx.stroke();
-    }
-
-    // Horizontal grid lines
-    for (let y = Math.ceil(yMin); y <= yMax; y++) {
-      const canvasY = worldToCanvas(0, y).y;
-      ctx.beginPath();
-      ctx.moveTo(0, canvasY);
-      ctx.lineTo(width, canvasY);
-      ctx.stroke();
-    }
-
-    // Draw axes
-    ctx.strokeStyle = 'hsl(var(--border))';
-    ctx.lineWidth = 2;
-
-    // X-axis
-    if (yMin <= 0 && yMax >= 0) {
-      const axisY = worldToCanvas(0, 0).y;
-      ctx.beginPath();
-      ctx.moveTo(0, axisY);
-      ctx.lineTo(width, axisY);
-      ctx.stroke();
-    }
-
-    // Y-axis
-    if (xMin <= 0 && xMax >= 0) {
-      const axisX = worldToCanvas(0, 0).x;
-      ctx.beginPath();
-      ctx.moveTo(axisX, 0);
-      ctx.lineTo(axisX, height);
-      ctx.stroke();
-    }
-
-    // Draw function
-    ctx.strokeStyle = 'hsl(var(--primary))';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-
-    let firstPoint = true;
-    const step = xRange / width;
-
-    for (let x = xMin; x <= xMax; x += step) {
-      const y = evaluateFunction(x, equation);
-      
-      if (!isNaN(y) && isFinite(y) && y >= yMin && y <= yMax) {
-        const canvasPoint = worldToCanvas(x, y);
-        
-        if (firstPoint) {
-          ctx.moveTo(canvasPoint.x, canvasPoint.y);
-          firstPoint = false;
-        } else {
-          ctx.lineTo(canvasPoint.x, canvasPoint.y);
+      plotData = functions.map((fn, idx) => {
+        if (!fn.expr.trim()) return null;
+        const expr = fn.expr.replace(/\^/g, '**').replace(/e/g, 'E');
+        const params = getParameters(expr);
+        let compiled;
+        try {
+          compiled = math.compile(expr);
+        } catch (err) {
+          return null; // Ignore invalid function
         }
-      } else {
-        firstPoint = true;
+        const x = [];
+        const y = [];
+        for (let i = 0; i <= 800; i++) {
+          const xv = xMin + (xMax - xMin) * (i / 800);
+          const scope = { x: xv };
+          params.forEach((p) => { scope[p] = paramValues[p] ?? 1; });
+          let yv;
+          try {
+            yv = compiled.evaluate(scope);
+          } catch {
+            yv = NaN;
+          }
+          x.push(xv);
+          y.push(yv);
+        }
+        if (y.some(val => typeof val === 'number' && isFinite(val))) validCount++;
+        return {
+          x, y,
+          type: 'scatter',
+          mode: 'lines',
+          name: fn.label,
+          line: { color: fn.color, width: 3 },
+          visible: true,
+        };
+      }).filter(Boolean);
+      if (validCount === 0) {
+        error = 'No valid function to plot. Please check your input.';
       }
+    } catch (err) {
+      error = err.message || 'Invalid function.';
+      plotData = [];
     }
+    return { plotData, error };
+  }, [functions, xMin, xMax, yMin, yMax, paramValues]);
 
-    ctx.stroke();
-
-    // Draw axis labels
-    ctx.fillStyle = 'hsl(var(--muted-foreground))';
-    ctx.font = '12px monospace';
-    ctx.textAlign = 'center';
-
-    // X-axis labels
-    for (let x = Math.ceil(xMin); x <= xMax; x++) {
-      if (x !== 0) {
-        const canvasPoint = worldToCanvas(x, 0);
-        ctx.fillText(x.toString(), canvasPoint.x, canvasPoint.y + 15);
-      }
-    }
-
-    // Y-axis labels
-    ctx.textAlign = 'right';
-    for (let y = Math.ceil(yMin); y <= yMax; y++) {
-      if (y !== 0) {
-        const canvasPoint = worldToCanvas(0, y);
-        ctx.fillText(y.toString(), canvasPoint.x - 5, canvasPoint.y + 4);
-      }
-    }
-  };
-
-  useEffect(() => {
-    drawGraph();
-  }, [equation, xMin, xMax, yMin, yMax]);
-
-  const presetEquations = [
-    { name: 'Quadratic', equation: 'x^2' },
-    { name: 'Cubic', equation: 'x^3' },
-    { name: 'Sine', equation: 'sin(x)' },
-    { name: 'Cosine', equation: 'cos(x)' },
-    { name: 'Exponential', equation: 'Math.E^x' },
-    { name: 'Logarithm', equation: 'ln(x)' },
-    { name: 'Absolute', equation: 'abs(x)' },
-    { name: 'Square Root', equation: 'sqrt(x)' }
-  ];
+  // Collect all unique parameters
+  const allParams = Array.from(new Set(functions.flatMap(fn => getParameters(fn.expr.replace(/\^/g, '**')))));
 
   return (
     <div className="bg-background rounded-xl p-6 shadow-2xl max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold text-center mb-6 text-primary">Function Grapher</h2>
-      
       {/* Controls */}
       <div className="grid md:grid-cols-2 gap-6 mb-6">
-        {/* Equation Input */}
+        {/* Function Inputs */}
         <div className="space-y-4">
-          <div>
-            <label className="block text-foreground mb-2 font-semibold">
-              Function: f(x) =
-            </label>
-            <input
-              type="text"
-              value={equation}
-              onChange={(e) => setEquation(e.target.value)}
-              className="w-full bg-card text-foreground border border-border rounded-lg px-4 py-2 focus:border-primary focus:outline-none font-mono"
-              placeholder="Enter function (e.g., x^2, sin(x), ln(x))"
-            />
-          </div>
-
+          {functions.map((fn, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={fn.expr}
+                onChange={e => updateFunction(idx, 'expr', e.target.value)}
+                className="flex-1 bg-card text-foreground border border-border rounded-lg px-3 py-2 font-mono"
+                placeholder={`Function ${fn.label} (e.g., x^2 + a*x)`}
+              />
+              <input
+                type="text"
+                value={fn.label}
+                onChange={e => updateFunction(idx, 'label', e.target.value)}
+                className="w-20 bg-card text-foreground border border-border rounded-lg px-2 py-2 font-mono"
+                placeholder="Label"
+              />
+              <input
+                type="color"
+                value={fn.color}
+                onChange={e => updateFunction(idx, 'color', e.target.value)}
+                className="w-8 h-8 p-0 border border-border rounded-lg"
+                title="Color"
+              />
+              {functions.length > 1 && (
+                <button onClick={() => removeFunction(idx)} className="text-destructive px-2 py-1 rounded hover:bg-destructive/10">✕</button>
+              )}
+            </div>
+          ))}
+          <button onClick={addFunction} className="bg-primary hover:bg-primary/80 text-primary-foreground px-3 py-2 rounded-lg text-sm">+ Add Function</button>
           {/* Preset Functions */}
           <div>
             <label className="block text-foreground mb-2 font-semibold">Quick Functions:</label>
@@ -190,7 +154,7 @@ const GraphPanel = () => {
               {presetEquations.map((preset) => (
                 <button
                   key={preset.name}
-                  onClick={() => setEquation(preset.equation)}
+                  onClick={() => updateFunction(0, 'expr', preset.equation)}
                   className="bg-primary hover:bg-primary/80 text-primary-foreground py-2 px-3 rounded text-sm transition-all duration-150 hover:scale-105"
                 >
                   {preset.name}
@@ -199,61 +163,142 @@ const GraphPanel = () => {
             </div>
           </div>
         </div>
-
-        {/* Range Controls */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-foreground mb-2 font-semibold">X Range:</label>
-            <div className="flex space-x-2">
-              <input
-                type="number"
-                value={xMin}
-                onChange={(e) => setXMin(parseFloat(e.target.value))}
-                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
-              />
-              <input
-                type="number"
-                value={xMax}
-                onChange={(e) => setXMax(parseFloat(e.target.value))}
-                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
-              />
+        {/* Parameter Sliders & Range Controls */}
+        <div className="space-y-4">
+          {/* Parameter Sliders */}
+          {allParams.length > 0 && (
+            <div className="mb-4">
+              <label className="block text-foreground mb-2 font-semibold">Parameters:</label>
+              <div className="flex flex-wrap gap-4">
+                {allParams.map(param => (
+                  <div key={param} className="flex items-center gap-2">
+                    <span className="font-mono">{param}:</span>
+                    <input
+                      type="range"
+                      min="-10" max="10" step="0.1"
+                      value={paramValues[param] ?? 1}
+                      onChange={e => updateParam(param, parseFloat(e.target.value))}
+                      className="w-32"
+                    />
+                    <input
+                      type="number"
+                      value={paramValues[param] ?? 1}
+                      onChange={e => updateParam(param, parseFloat(e.target.value))}
+                      className="w-16 bg-card text-foreground border border-border rounded px-2 py-1 text-xs text-center"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Range Controls */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-foreground mb-2 font-semibold">X Range:</label>
+              <div className="flex space-x-2">
+                <input
+                  type="number"
+                  value={xMin}
+                  onChange={e => setXMin(parseFloat(e.target.value))}
+                  className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
+                />
+                <input
+                  type="number"
+                  value={xMax}
+                  onChange={e => setXMax(parseFloat(e.target.value))}
+                  className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-foreground mb-2 font-semibold">Y Range:</label>
+              <div className="flex space-x-2">
+                <input
+                  type="number"
+                  value={yMin}
+                  onChange={e => setYMin(parseFloat(e.target.value))}
+                  className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
+                />
+                <input
+                  type="number"
+                  value={yMax}
+                  onChange={e => setYMax(parseFloat(e.target.value))}
+                  className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
+                />
+              </div>
             </div>
           </div>
-          <div>
-            <label className="block text-foreground mb-2 font-semibold">Y Range:</label>
-            <div className="flex space-x-2">
-              <input
-                type="number"
-                value={yMin}
-                onChange={(e) => setYMin(parseFloat(e.target.value))}
-                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
-              />
-              <input
-                type="number"
-                value={yMax}
-                onChange={(e) => setYMax(parseFloat(e.target.value))}
-                className="w-full bg-card text-foreground border border-border rounded-lg px-3 py-2 focus:border-primary focus:outline-none"
-              />
-            </div>
+          {/* Axis/Grid/Legend Controls */}
+          <div className="flex flex-wrap gap-4 mt-4">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={showLegend} onChange={e => setShowLegend(e.target.checked)} /> Show Legend
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={showGrid} onChange={e => setShowGrid(e.target.checked)} /> Show Grid
+            </label>
+            <label className="flex items-center gap-2">
+              Axis Type:
+              <select value={axisType} onChange={e => setAxisType(e.target.value)} className="bg-card border border-border rounded px-2 py-1">
+                <option value="linear">Linear</option>
+                <option value="log">Log</option>
+              </select>
+            </label>
           </div>
         </div>
       </div>
-
-      {/* Graph Canvas */}
-      <div className="bg-card rounded-lg p-4">
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={400}
-          className="w-full h-[400px] rounded-lg"
-        />
+      {/* Plotly Graph */}
+      <div className="bg-card rounded-lg p-4 min-h-[420px] flex flex-col items-center justify-center overflow-x-auto" style={{background:'hsl(var(--background))'}}>
+        {error ? (
+          <div className="text-destructive text-center font-semibold text-lg">{error}</div>
+        ) : (
+          <div className="w-full max-w-full" style={{overflowX:'auto'}}>
+            <Plot
+              data={plotData}
+              layout={{
+                autosize: true,
+                width: undefined,
+                height: 400,
+                margin: { l: 50, r: 30, t: 30, b: 50 },
+                xaxis: {
+                  range: [xMin, xMax],
+                  title: 'x',
+                  showgrid: showGrid,
+                  type: axisType,
+                },
+                yaxis: {
+                  range: [yMin, yMax],
+                  title: 'y',
+                  showgrid: showGrid,
+                  type: axisType,
+                },
+                legend: { orientation: 'h', y: -0.2 },
+                showlegend: showLegend,
+                plot_bgcolor: 'hsl(var(--background))',
+                paper_bgcolor: 'hsl(var(--background))',
+                font: { color: 'hsl(var(--foreground))' },
+              }}
+              config={{
+                responsive: true,
+                displayModeBar: true,
+                toImageButtonOptions: {
+                  format: 'png',
+                  filename: 'function-graph',
+                  height: 400,
+                  width: 800,
+                  scale: 2,
+                },
+                displaylogo: false,
+              }}
+              style={{ width: '100%', minWidth: 300, height: '400px', maxWidth: '100%' }}
+            />
+          </div>
+        )}
       </div>
-
       {/* Function Help */}
       <div className="mt-4 text-sm text-gray-400">
-        <p><strong>Supported functions:</strong> sin(x), cos(x), tan(x), ln(x), log(x), sqrt(x), abs(x), pi, e</p>
+        <p><strong>Supported functions:</strong> sin(x), cos(x), tan(x), log(x), sqrt(x), abs(x), e</p>
         <p><strong>Operators:</strong> +, -, *, /, ^ (power)</p>
-        <p><strong>Examples:</strong> x^2, sin(x), 2*x + 3, sqrt(x^2 + 1)</p>
+        <p><strong>Examples:</strong> x^2, sin(x), 2*x + 3, sqrt(x^2 + 1), x^2 + a*x (with slider for a)</p>
       </div>
     </div>
   );

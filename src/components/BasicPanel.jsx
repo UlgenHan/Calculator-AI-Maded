@@ -85,8 +85,8 @@ const BasicPanel = () => {
       </div>
 
       {/* Buttons Grid */}
-      <div className="w-full max-w-[240px] mx-auto">
-        <div className="grid grid-cols-5 sm:grid-cols-4 gap-1 auto-rows-fr">
+      <div className="w-full max-w-[720px] mx-auto p-6">
+        <div className="grid grid-cols-5 sm:grid-cols-4 gap-6 justify-items-center auto-rows-fr">
           {/* Row 1 - Clear, Backspace, Percent, Divide */}
           <div className="contents">
             <button

@@ -21,9 +21,25 @@ const MatrixPanel = () => {
   };
 
   const updateMatrixSize = (newRows, newCols) => {
-    setMatrixSize({ rows: newRows, cols: newCols });
-    setMatrixA(resizeMatrix(matrixA, newRows, newCols));
-    setMatrixB(resizeMatrix(matrixB, newRows, newCols));
+    const rows = Math.max(1, newRows);
+    const cols = Math.max(1, newCols);
+    setMatrixSize({ rows, cols });
+    setMatrixA(resizeMatrix(matrixA, rows, cols));
+    setMatrixB(resizeMatrix(matrixB, rows, cols));
+  };
+
+  const handleRowsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      updateMatrixSize(value, matrixSize.cols);
+    }
+  };
+
+  const handleColsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      updateMatrixSize(matrixSize.rows, value);
+    }
   };
 
   const updateMatrixValue = (matrix, setMatrix, row, col, value) => {
@@ -99,7 +115,7 @@ const MatrixPanel = () => {
   };
 
   const MatrixInput = ({ matrix, setMatrix, label }) => (
-    <div className="bg-card rounded-lg p-4">
+    <div className="bg-card rounded-lg p-4 overflow-auto max-w-full">
       <h3 className="text-lg font-semibold mb-3 text-primary">{label}</h3>
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${matrixSize.cols}, 1fr)` }}>
         {matrix.map((row, i) =>
@@ -109,7 +125,7 @@ const MatrixPanel = () => {
               type="number"
               value={val}
               onChange={(e) => updateMatrixValue(matrix, setMatrix, i, j, e.target.value)}
-              className="w-16 h-12 text-center bg-background border border-border rounded text-foreground focus:border-primary focus:outline-none"
+              className="w-14 bg-card text-foreground border border-border rounded px-2 py-1 text-xs text-center m-1 focus:border-primary focus:outline-none"
             />
           ))
         )}
@@ -162,26 +178,28 @@ const MatrixPanel = () => {
       <h2 className="text-2xl font-bold text-center mb-6 text-primary">Matrix Calculator</h2>
       
       {/* Matrix Size Controls */}
-      <div className="mb-6 flex justify-center space-x-4">
+      <div className="mb-6 flex justify-center space-x-6">
         <div className="flex items-center space-x-2">
-          <label className="text-foreground">Rows:</label>
-          <select
+          <label className="text-foreground font-medium" htmlFor="rows-input">Rows:</label>
+          <input
+            id="rows-input"
+            type="number"
+            min="1"
             value={matrixSize.rows}
-            onChange={(e) => updateMatrixSize(parseInt(e.target.value), matrixSize.cols)}
-            className="bg-card text-foreground rounded px-2 py-1"
-          >
-            {[2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
-          </select>
+            onChange={handleRowsChange}
+            className="w-14 bg-card text-foreground border border-border rounded px-2 py-1 text-xs text-center m-1 focus:border-primary focus:outline-none"
+          />
         </div>
         <div className="flex items-center space-x-2">
-          <label className="text-foreground">Columns:</label>
-          <select
+          <label className="text-foreground font-medium" htmlFor="cols-input">Columns:</label>
+          <input
+            id="cols-input"
+            type="number"
+            min="1"
             value={matrixSize.cols}
-            onChange={(e) => updateMatrixSize(matrixSize.rows, parseInt(e.target.value))}
-            className="bg-card text-foreground rounded px-2 py-1"
-          >
-            {[2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
-          </select>
+            onChange={handleColsChange}
+            className="w-14 bg-card text-foreground border border-border rounded px-2 py-1 text-xs text-center m-1 focus:border-primary focus:outline-none"
+          />
         </div>
       </div>
 
@@ -192,28 +210,28 @@ const MatrixPanel = () => {
       </div>
 
       {/* Operation Buttons */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center mb-6">
         <button
           onClick={addMatrices}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-1.5 px-3 rounded-full text-xs font-medium transition-colors duration-150"
         >
           Add
         </button>
         <button
           onClick={subtractMatrices}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-1.5 px-3 rounded-full text-xs font-medium transition-colors duration-150"
         >
           Subtract
         </button>
         <button
           onClick={multiplyMatrices}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-1.5 px-3 rounded-full text-xs font-medium transition-colors duration-150"
         >
           Multiply
         </button>
         <button
           onClick={() => setResult(calculateDeterminant(matrixA))}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground py-3 px-4 rounded-lg font-semibold transition-all duration-150 hover:scale-105"
+          className="bg-primary hover:bg-primary/80 text-primary-foreground py-1.5 px-3 rounded-full text-xs font-medium transition-colors duration-150"
         >
           Determinant
         </button>
