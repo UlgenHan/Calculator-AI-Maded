@@ -32,7 +32,7 @@ const Index = () => {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">C</span>
             </div>
             <h1 className="text-xl font-semibold text-white">Calculator</h1>
@@ -46,7 +46,7 @@ const Index = () => {
       </div>
 
       {/* Main Content */}
-      <div className="p-4">
+      <div className="p-4 bg-slate-900 min-h-screen">
         <div className="max-w-4xl mx-auto">
           <ModeSwitcher 
             selectedMode={selectedMode} 
