@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BackgroundPaths } from "@/components/ui/background-paths";
 
 const ScientificPanel = () => {
   const [display, setDisplay] = useState('0');
@@ -106,12 +107,9 @@ const ScientificPanel = () => {
   return (
     <div className="bg-background rounded-xl p-6 shadow-2xl max-w-2xl mx-auto">
       {/* Display */}
-      <div className="bg-card rounded-lg p-4 mb-4">
-        <div className="text-right text-2xl font-mono text-primary min-h-[2.5rem] flex items-center justify-end">
+      <div className="bg-card rounded-2xl p-3 mb-3 border border-border">
+        <div className="text-right text-2xl font-light text-foreground min-h-[2.5rem] flex items-center justify-end overflow-hidden">
           {display}
-        </div>
-        <div className="text-right text-sm text-muted-foreground mt-1">
-          Mode: {isRadians ? 'Radians' : 'Degrees'} | Memory: {memory}
         </div>
       </div>
 
@@ -125,231 +123,73 @@ const ScientificPanel = () => {
         </button>
       </div>
 
-      {/* Scientific Buttons Grid */}
-      <div className="grid grid-cols-6 gap-2">
-        {/* Row 1 - Functions */}
-        <Button 
-          onClick={() => scientificFunction('sin')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          sin
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('cos')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          cos
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('tan')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          tan
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('ln')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          ln
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('log')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          log
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('sqrt')}
-          className="bg-primary hover:bg-primary/80 text-primary-foreground"
-        >
-          √
-        </Button>
+      {/* Buttons Grid */}
+      <div className="w-full px-4 mx-auto flex justify-center">
+        <div className="grid grid-cols-5 gap-4 justify-items-center">
 
-        {/* Row 2 - Powers and Memory */}
-        <Button 
-          onClick={() => scientificFunction('pow2')}
-          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
-        >
-          x²
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('pow3')}
-          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
-        >
-          x³
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '^')}
-          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
-        >
-          x^y
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('factorial')}
-          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
-        >
-          x!
-        </Button>
-        <Button 
-          onClick={() => scientificFunction('inverse')}
-          className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
-        >
-          1/x
-        </Button>
-        <Button 
-          onClick={() => setMemory(parseFloat(display))}
-          className="bg-green-600 hover:bg-green-700 text-white"
-        >
-          MS
-        </Button>
+          {/* Row 1 - Trigonometric & Log */}
+          <div className="contents">
+            <button onClick={() => scientificFunction('sin')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">sin</button>
+            <button onClick={() => scientificFunction('cos')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">cos</button>
+            <button onClick={() => scientificFunction('tan')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">tan</button>
+            <button onClick={() => scientificFunction('log')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">log</button>
+            <button onClick={() => scientificFunction('ln')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">ln</button>
+          </div>
 
-        {/* Row 3 - Constants and Memory */}
-        <Button 
-          onClick={() => insertConstant('π')}
-          className="bg-yellow-600 hover:bg-yellow-700 text-white"
-        >
-          π
-        </Button>
-        <Button 
-          onClick={() => insertConstant('e')}
-          className="bg-yellow-600 hover:bg-yellow-700 text-white"
-        >
-          e
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '(')}
-          className="bg-gray-600 hover:bg-gray-700 text-white"
-        >
-          (
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + ')')}
-          className="bg-gray-600 hover:bg-gray-700 text-white"
-        >
-          )
-        </Button>
-        <Button 
-          onClick={clear}
-          className="bg-red-600 hover:bg-red-700 text-white"
-        >
-          C
-        </Button>
-        <Button 
-          onClick={() => setDisplay(String(memory))}
-          className="bg-green-600 hover:bg-green-700 text-white"
-        >
-          MR
-        </Button>
+          {/* Row 2 - Powers & Roots */}
+          <div className="contents">
+            <button onClick={() => scientificFunction('sqrt')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">√</button>
+            <button onClick={() => scientificFunction('pow2')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">x²</button>
+            <button onClick={() => scientificFunction('pow3')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">x³</button>
+            <button onClick={() => scientificFunction('^')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">xʸ</button>
+            <button onClick={() => scientificFunction('1/x')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">1/x</button>
+          </div>
 
-        {/* Row 4 - Numbers */}
-        <Button 
-          onClick={() => inputNumber(7)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          7
-        </Button>
-        <Button 
-          onClick={() => inputNumber(8)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          8
-        </Button>
-        <Button 
-          onClick={() => inputNumber(9)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          9
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '÷')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          ÷
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '×')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          ×
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display.slice(0, -1) || '0')}
-          className="bg-orange-600 hover:bg-orange-700 text-white"
-        >
-          ⌫
-        </Button>
+          {/* Row 3 - Clear, Backspace, Percent, Divide */}
+          <div className="contents">
+            <button onClick={clear} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">AC</button>
+            <button onClick={() => setDisplay(display.slice(0, -1) || '0')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">⌫</button>
+            <button onClick={() => scientificFunction('%')} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-sm rounded-full transition-all duration-150 active:scale-95">%</button>
+            <button onClick={() => scientificFunction('÷')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">÷</button>
+            <button onClick={() => scientificFunction('×')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">×</button>
+          </div>
 
-        {/* Row 5 */}
-        <Button 
-          onClick={() => inputNumber(4)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          4
-        </Button>
-        <Button 
-          onClick={() => inputNumber(5)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          5
-        </Button>
-        <Button 
-          onClick={() => inputNumber(6)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          6
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '-')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          -
-        </Button>
-        <Button 
-          onClick={() => setDisplay(display + '+')}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          +
-        </Button>
-        <Button 
-          onClick={() => calculate(display)}
-          className="bg-green-600 hover:bg-green-700 text-white row-span-2"
-        >
-          =
-        </Button>
+          {/* Row 4 - 7 8 9 × */}
+          <div className="contents">
+            <button onClick={() => inputNumber(7)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">7</button>
+            <button onClick={() => inputNumber(8)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">8</button>
+            <button onClick={() => inputNumber(9)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">9</button>
+            <button onClick={() => scientificFunction('×')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">×</button>
+            <button onClick={() => scientificFunction('-')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">−</button>
+          </div>
 
-        {/* Row 6 */}
-        <Button 
-          onClick={() => inputNumber(1)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          1
-        </Button>
-        <Button 
-          onClick={() => inputNumber(2)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          2
-        </Button>
-        <Button 
-          onClick={() => inputNumber(3)}
-          className="bg-slate-700 hover:bg-slate-600 text-white"
-        >
-          3
-        </Button>
-        <Button 
-          onClick={() => inputNumber(0)}
-          className="bg-slate-700 hover:bg-slate-600 text-white col-span-2"
-        >
-          0
-        </Button>
+          {/* Row 5 - 4 5 6 − */}
+          <div className="contents">
+            <button onClick={() => inputNumber(4)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">4</button>
+            <button onClick={() => inputNumber(5)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">5</button>
+            <button onClick={() => inputNumber(6)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">6</button>
+            <button onClick={() => scientificFunction('-')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">−</button>
+            <button onClick={() => scientificFunction('+')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">+</button>
+          </div>
 
-        {/* Last row */}
-        <Button 
-          onClick={inputDecimal}
-          className="bg-slate-700 hover:bg-slate-600 text-white col-span-5"
-        >
-          .
-        </Button>
+          {/* Row 6 - 1 2 3 + (mobile shows = separately) */}
+          <div className="contents">
+            <button onClick={() => inputNumber(1)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">1</button>
+            <button onClick={() => inputNumber(2)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">2</button>
+            <button onClick={() => inputNumber(3)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">3</button>
+            <button onClick={() => scientificFunction('+')} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">+</button>
+            <button onClick={() => calculate(display)} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">=</button>
+          </div>
+
+          {/* Row 7 - 0 . = (plus two placeholders for uniform 5-column layout) */}
+          <div className="contents">
+            <button onClick={() => inputNumber(0)} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">0</button>
+            <button onClick={inputDecimal} className="w-full h-12 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-light text-base rounded-full transition-all duration-150 active:scale-95">.</button>
+            <button onClick={() => calculate(display)} className="w-full h-12 bg-primary hover:bg-primary/80 text-primary-foreground font-semibold text-base rounded-full transition-all duration-150 active:scale-95">=</button>
+            <div className="w-full h-0 invisible pointer-events-none" />
+            <div className="w-full h-0 invisible pointer-events-none" />
+          </div>
+        </div>
       </div>
     </div>
   );
