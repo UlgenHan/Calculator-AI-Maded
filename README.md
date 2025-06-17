@@ -42,6 +42,24 @@ By using these tools together, I could go from idea to working app with almost n
 | Code Generation | Lovable | ~10 minutes | Converted the Figma file into clean React/TypeScript code ready to run. |
 | Coding & Refinement | Cursor | Continuous | Served as an AI pair-programmer; bug fixes and feature iterations took seconds to minutes. |
 
+## 🗒️ Tool Reflections
+
+### Stitch UI
+I used a prompt generated with ChatGPT as the starting point, but I couldn't get the exact layout I wanted right away. The most efficient strategy was **incremental prompting**—iteratively refining the prompt until the design got closer to my target. Stitch UI generally produces a *rough* draft. That was good enough for this calculator, but if your product requires a complex or highly polished interface, extracting a perfect design can be challenging. Still, it's an excellent AI tool for quickly forming a visual concept.
+
+### Lovable
+I exported the Figma design from Stitch UI and imported it into Lovable together with the same ChatGPT prompt. The first attempts missed the mark (wrong colour palette, etc.), but after a few iterations Lovable generated a layout I was happy with. In my experience, Lovable is very handy for producing a **frontend skeleton** that you can refine later.
+
+### Cursor (O3 / Claude-4 models)
+For pure frontend generation I didn't get as much value from Cursor at first. Instead, I took the code exported by Lovable and used Cursor to implement **all the features and business logic**. I let it replicate the existing design rather than redesigning. Overall, Cursor is powerful, but it sometimes fails at surprisingly simple tasks and can't fix them even with nudging. At that point you need to step in manually.
+
+A few lessons learned:
+
+* Keep prompts focused on a **single task**; long multi-step prompts often confuse the model.
+* **Incremental prompting** (small, iterative requests) worked best for me.
+* As the codebase grows, Cursor can struggle with context and produce inconsistent results—so break work into small chunks.
+
+For larger projects these tools act as accelerators, handling much of the "grunt work" while you supervise and course-correct when necessary.
 
 ## ⚙️ AI-Based Development Workflow
 
